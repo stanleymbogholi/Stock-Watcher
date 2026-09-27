@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Watcher</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">SW</span>
+    <div>
+      <h1>Stock Watcher</h1>
+      <p class="tagline">Know what's in stock before you buy it. Know what's selling before you don't.</p>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="alerts" class="panel alerts-panel">
+    <div class="alerts-col">
+      <h2>Running low</h2>
+      <p class="hint">At or below the reorder point &mdash; restock soon.</p>
+      <ul id="low-stock-list" class="alert-list low"></ul>
+    </div>
+    <div class="alerts-col">
+      <h2>Possibly overstocked</h2>
+      <p class="hint">More than ~30 days of stock at the current sales pace.</p>
+      <ul id="overstock-list" class="alert-list over"></ul>
+    </div>
+  </section>
+
+  <section class="panel simulators">
+    <div class="simulator">
+      <h2>Before you order more&hellip;</h2>
+      <p class="hint">Check whether you actually need it.</p>
+      <form id="purchase-form">
+        <label>Product
+          <select id="purchase-product" required></select>
+        </label>
+        <label>Quantity to order
+          <input type="number" id="purchase-qty" min="1" value="10" required>
+        </label>
+        <button type="submit">Check before buying</button>
+      </form>
+      <div id="purchase-result" class="result"></div>
+    </div>
+
+    <div class="simulator">
+      <h2>Record a sale</h2>
+      <p class="hint">Deducts stock and flags a low-stock warning if needed.</p>
+      <form id="sale-form">
+        <label>Product
+          <select id="sale-product" required></select>
+        </label>
+        <label>Quantity sold
+          <input type="number" id="sale-qty" min="1" value="1" required>
+        </label>
+        <button type="submit">Record sale</button>
+      </form>
+      <div id="sale-result" class="result"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Top sellers</h2>
+      <div class="controls">
+        <label>Window
+          <select id="top-sellers-days">
+            <option value="30">Last 30 days</option>
+            <option value="90" selected>Last 90 days</option>
+            <option value="">All time</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <table id="top-sellers-table" class="data-table">
+      <thead><tr><th>Product</th><th>Category</th><th>Units sold</th><th>Revenue</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Dead stock</h2>
+      <div class="controls">
+        <label>No sales in
+          <select id="dead-stock-days">
+            <option value="30">30 days</option>
+            <option value="60" selected>60 days</option>
+            <option value="120">120 days</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <p class="hint">Sitting stock with no recent sales &mdash; candidates to stop reordering or clear out.</p>
+    <table id="dead-stock-table" class="data-table">
+      <thead><tr><th>Product</th><th>Category</th><th>Stock on hand</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Full inventory</h2>
+      <input type="search" id="inventory-search" placeholder="Search products&hellip;">
+    </div>
+    <table id="inventory-table" class="data-table">
+      <thead><tr><th>Product</th><th>Category</th><th>Stock</th><th>Reorder at</th><th>Status</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
